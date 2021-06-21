@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block title %}
+	<title>Polls List</title>
+{% endblock %}
+
+{% block headerright %}
+
+    <ul class="navbar-nav ml-auto">
+      {% if user.is_authenticated %}
+      <li class="nav-item dropdown active">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Welcome, {{ user.get_username }}
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+        </div>
+      </li>
+      {% else %}
+      <li class="nav-item">
+        <a href="{% url 'login' %}"><button class="btn btn-success mx-1" type="submit">Login</button></a>
+      </li>
+      <li class="nav-item">
+        <a href="{% url 'signup' %}"><button class="btn btn-success mx-1" type="submit">Signup</button></a>
+      </li>
+      {% endif %}
+    </ul>
+
+{% endblock %}
+
+{% block content %}
+
+	{% if messages %}
+
+	{% for message in messages %}
+		<div class="alert alert-{{message.tags}} alert-dismissible fade show w-50 ml-auto mr-auto" role="alert">
+			{{ message }}
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    			<span aria-hidden="true">&times;</span>
+  			</button>
+		</div>
+	{% endfor %}
+
+	{% endif %}
+
+	<br>
+
+	{% if user.is_authenticated %}
+
+
+	<div class="container">
+
+	{% if specific_user %}
+		<h2 class="mb-4">
+			All Polls by <a href="{% url 'userprofilepolls' view.kwargs.username %}">{{ view.kwargs.username }}</a>
+			(Total - {{ page_obj.paginator.count }} poll{{ page_obj.paginator.count|pluralize }})
+		</h2>
+	{% else %}
+		<h2 class="mb-4">
+			All Polls
+			(Total - {{ page_obj.paginator.count }} poll{{ page_obj.paginator.count|pluralize }})
+		</h2>
+	{% endif %}
+
+	{% for question in question_list %}
+
+		<fieldset style="border: 1px solid black;">
+			<legend>
+				<hr class="my-0">
+
+				<a href="{% url 'pollsdetail' question.id %}"
+					style="color:{% if question in questions_voted %} green
+								{% else %} red
+								{% endif %}">
+					<p class="d-inline ml-2">
+						{{ question.question_text }}
+						({{ question.total_votes }} vote{{ question.total_votes|pluralize }})
+					</p>
+				</a>
+				{% if question in questions_voted %}
+					<small class="mx-4">Already Voted!!</small>
+				{% endif %}
+				
+				<hr class="my-0">
+			</legend>
+			<small class="mr-4 ml-3">Published by: 
+				"<a href="{% url 'userprofilepolls' question.published_by %}">{{ question.published_by }}</a>"</small>
+			<small class="ml-4">Published on: {{ question.published_on|date:"F d, Y" }}</small>
+		
+		</fieldset>
+
+		<br><br>
+
+	{% endfor %}
+
+		<div class="mb-4">
+		{% if is_paginated %}
+
+			{% if page_obj.has_previous %}
+				<a class="btn btn-outline-secondary btn-sm" href="?page=1">&lt;&lt;</a>
+				<a class="btn btn-outline-secondary btn-sm" href="?page={{ page_obj.previous_page_number }}">&lt;</a>
+			{% endif %}
+
+			{% for num in page_obj.paginator.page_range %}
+				{% if page_obj.number == num %}
+					<a class="btn btn-secondary btn-sm" href="?page={{ num }}">{{ num }}</a>
+				{% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+					<a class="btn btn-outline-secondary btn-sm" href="?page={{ num }}">{{ num }}</a>
+				{% endif %}
+			{% endfor %}
+
+			{% if page_obj.has_next %}
+				<a class="btn btn-outline-secondary btn-sm" href="?page={{ page_obj.next_page_number}}">&gt;</a>
+				<a class="btn btn-outline-secondary btn-sm" href="?page={{ page_obj.paginator.num_pages }}">&gt;&gt;</a>
+			{% endif %}
+
+		{% endif %}
+		</div><br><br>
+
+	</div>
+
+	<!-- {% if mypolls %}
+		My Polls
+	{% else %}
+		General Polls
+	{% endif %} -->
+
+
+	{% else %}
+	<div class="w-50 mr-auto ml-auto">
+		You are not autheticated!! Please Login or Signup!!
+	</div>
+
+	{% endif %}
+
+{% endblock %}
