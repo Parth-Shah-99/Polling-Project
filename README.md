@@ -32,11 +32,21 @@ Next, install the requirements from requirements.txt file:
 ```bash
 pip install -r requirements.txt
 ```
+
+> Before running migrations, edit the settings.py file:
+> 1.Generate new SECRET_KEY (help: you can generate it from [Djecrety](https://djecrety.ir/))
+> (SECRET_KEY = "<generated_key>")
+> 2.Set DEBUG = True
+> 3.Update EMAIL_HOST_USER and EMAIL_HOST_PASSWORD
+> (EMAIL_HOST_USER = "<email_id>",
+> EMAIL_HOST_PASSWORD = "<password>")
+
 Next, run migrations:
 ```bash
+python manage.py makemigrations polls
 python manage.py migrate
 ```
-Next, create a default superuser (entering username and password for admin):
+Next, create a default superuser (enter username and password for admin):
 ```bash
 python manage.py createsuperuser
 ```
@@ -44,6 +54,8 @@ Run the server:
 ```bash
 python manage.py runserver
 ```
-Finally, navigate to [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
+Finally, navigate to [http://127.0.0.1:8000/](http://127.0.0.1:8000/) and ENJOY THE POLLING APP.
+
+For Admin Panel, navigate to [http://127.0.0.1:8000/admin/](http://127.0.0.1:8000/admin/) and enter username and password you have used earlier.
 # License [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 Please see the [LICENSE](https://github.com/Parth-Shah-99/Polling-Project/blob/master/LICENSE) file for details.
