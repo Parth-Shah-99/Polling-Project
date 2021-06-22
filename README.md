@@ -33,7 +33,7 @@ Next, install the requirements from requirements.txt file:
 pip install -r requirements.txt
 ```
 
-- Before running migrations, edit the settings.py file:
+Before running migrations, edit the settings.py file:
 [x] 1. Generate new SECRET_KEY (help: you can generate it from [Djecrety](https://djecrety.ir/))
 (SECRET_KEY = "<generated_key>")
 [x] 2. Set DEBUG = True
