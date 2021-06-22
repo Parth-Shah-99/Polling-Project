@@ -3,7 +3,7 @@ The Polling Project allows users to Create, Manage and Vote in multiple polls cr
 As a result, one can statistically analyze the trend by taking public opinion through these polls.
 
 # Tech Stack
-This application is purely build with the Django Framework of Python.
+This application is purely build with the Django Framework of Python.\
 Requirements:
 - Python 3
 - python-pip
@@ -34,9 +34,9 @@ pip install -r requirements.txt
 ```
 
 - Before running migrations, edit the settings.py file:
-1. Generate new SECRET_KEY (help: you can generate it from [Djecrety](https://djecrety.ir/)) ( SECRET_KEY = "<generated_key>" )
+1. Generate new SECRET_KEY (help: you can generate it from [Djecrety](https://djecrety.ir/))<br /> ( SECRET_KEY = "<generated_key>" )
 2. Set DEBUG = True
-3. Update EMAIL_HOST_USER and EMAIL_HOST_PASSWORD ( EMAIL_HOST_USER = "<your_email_id>", EMAIL_HOST_PASSWORD = "<your_password>" )
+3. Update EMAIL_HOST_USER and EMAIL_HOST_PASSWORD<br /> ( EMAIL_HOST_USER = "<your_email_id>", EMAIL_HOST_PASSWORD = "<your_password>" )
 
 Next, run migrations:
 ```bash
