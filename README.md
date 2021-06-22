@@ -33,13 +33,12 @@ Next, install the requirements from requirements.txt file:
 pip install -r requirements.txt
 ```
 
-> Before running migrations, edit the settings.py file:
-> 1.Generate new SECRET_KEY (help: you can generate it from [Djecrety](https://djecrety.ir/))
-> (SECRET_KEY = "<generated_key>")
-> 2.Set DEBUG = True
-> 3.Update EMAIL_HOST_USER and EMAIL_HOST_PASSWORD
-> (EMAIL_HOST_USER = "<email_id>",
-> EMAIL_HOST_PASSWORD = "<password>")
+- Before running migrations, edit the settings.py file:
+[x] 1. Generate new SECRET_KEY (help: you can generate it from [Djecrety](https://djecrety.ir/))
+(SECRET_KEY = "<generated_key>")
+[x] 2. Set DEBUG = True
+[x] 3. Update EMAIL_HOST_USER and EMAIL_HOST_PASSWORD
+(EMAIL_HOST_USER = "<your_email_id>", EMAIL_HOST_PASSWORD = "<your_password>")
 
 Next, run migrations:
 ```bash
