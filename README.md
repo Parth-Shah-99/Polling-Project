@@ -45,3 +45,5 @@ Run the server:
 python manage.py runserver
 ```
 Finally, navigate to [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
+# License [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+Please see the [LICENSE](https://github.com/Parth-Shah-99/Polling-Project/blob/master/LICENSE) file for details.
