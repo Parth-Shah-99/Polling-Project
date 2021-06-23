@@ -60,7 +60,7 @@
 		</h2>
 		{% else %}
 		<h2 class="mb-4">
-			All Polls
+			{% if mypolls %}My{% else %}All{% endif %} Polls
 			(Total - {{ page_obj.paginator.count }} poll{{ page_obj.paginator.count|pluralize }})
 		</h2>
 		{% endif %}
