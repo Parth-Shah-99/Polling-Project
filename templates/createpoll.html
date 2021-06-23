@@ -15,6 +15,8 @@
           Welcome, {{ user.get_username }}
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="{% url 'profileupdate' %}">Update Profile</a>
+          <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
         </div>
       </li>
@@ -35,8 +37,8 @@
 	{% if messages %}
 
 	{% for message in messages %}
-		<div class="alert alert-{{message.tags}} alert-dismissible fade show w-50 ml-auto mr-auto" role="alert">
-			{{ message }}
+		<div class="alert alert-{{message.tags}} alert-dismissible fade show w-50 ml-auto mr-auto mt-3" role="alert">
+			<h2>{{ message }}</h2>
 			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
     			<span aria-hidden="true">&times;</span>
   			</button>
@@ -108,6 +110,7 @@
 
 
 	{% else %}
+	
 	<div class="w-50 mr-auto ml-auto">
 		You are not autheticated!! Please Login or Signup!!
 	</div>

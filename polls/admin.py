@@ -54,12 +54,17 @@ admin.site.unregister(User)
 admin.site.register(User, MyUserAdmin)
 
 
+# Choice class Admin
 class ChoiceAdmin(admin.ModelAdmin):
 	fieldsets = [
 		('Choice Information', {'fields': ['question', 'choice_text', 'votes']}),
 	]
 	list_display = ['question', 'choice_text', 'votes']
 
+admin.site.register(Choice, ChoiceAdmin)
+
+
+# UserVotes class Admin
 class UserVotesAdmin(admin.ModelAdmin):
 	fieldsets = [
 		('User Information', {'fields': ['user']}),
@@ -68,7 +73,5 @@ class UserVotesAdmin(admin.ModelAdmin):
 	]
 	list_display = ['user', 'choice', 'question']
 	search_fields = ['user', 'choice', 'question']
-
-admin.site.register(Choice, ChoiceAdmin)
 
 admin.site.register(UserVotes, UserVotesAdmin)

@@ -1,13 +1,14 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.urls import reverse
-from .forms import UserSignupForm, CreatePollForm
+from .forms import UserSignupForm, CreatePollForm, UserUpdateForm
 from django.contrib.auth.models import User
 from polls.models import Question, Choice, UserProfile, UserVotes
 from django.views import generic
 from django.core.paginator import Paginator
+import json
 
 # Create your views here.
 
@@ -25,7 +26,6 @@ def signup(request):
     form = UserSignupForm()
 
     if request.method == 'POST':
-
         form = UserSignupForm(request.POST)
         if form.is_valid():
 
@@ -43,6 +43,9 @@ def signup(request):
 
             messages.success(request, 'You are successfully registered. Please Login to create/answer the Polls.')
             return HttpResponseRedirect(reverse('login'))
+
+    else:
+        form.fields['username'].help_text += "<br><b>CAUTION !!</b> Once the account is created, you won't be able to change the Username."
         
     return render(request, 'signup.html', {'form': form})
 
@@ -64,6 +67,15 @@ class ProfilePollsView(generic.ListView):
     paginate_by = 5
 
     def get_queryset(self):
+
+        if self.request.method == "GET":
+
+            search_text = self.request.GET.get("search_text", None)
+            if search_text:
+                return Question.objects.filter(question_text__icontains=search_text).order_by("-published_on")
+            else:
+                return Question.objects.order_by('-published_on')
+
         return Question.objects.order_by('-published_on')
 
     def get_context_data(self, *args, **kwargs):
@@ -76,14 +88,6 @@ class ProfilePollsView(generic.ListView):
             context['questions_voted'] = questions_voted
 
         return context
-
-
-    # def get(self, request):
-    #     print("inside get")
-    #     print(request.GET)
-    #     if request.GET:
-    #         return HttpResponse("username passed")
-    #     return render(request, 'pollslist.html')
 
 
 class UserProfilePollsView(generic.ListView):
@@ -107,7 +111,6 @@ class UserProfilePollsView(generic.ListView):
         context['specific_user'] = self.kwargs.get('username')
 
         return context
-
 
 
 class ProfileMyPollsView(generic.ListView):
@@ -150,7 +153,6 @@ class PollsDetailView(generic.DetailView):
         return context
 
 
-
 class PollsResultView(generic.DetailView):
     model = Question
     context_object_name = 'question'
@@ -173,11 +175,13 @@ class PollsResultView(generic.DetailView):
 
 
 def profilecreatepoll(request):
+
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('profile'))
+        
     form = CreatePollForm()
 
     if request.method == "POST":
-        
-        print(request.POST)
 
         question_text = request.POST['question_text']
         choice1 = request.POST['choice1']
@@ -204,6 +208,37 @@ def profilecreatepoll(request):
 
     return render(request, 'createpoll.html', {'form': form})
 
+
+def profileupdate(request):
+
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('profile'))
+
+    if request.method == "POST":
+        form = UserUpdateForm(request.POST, instance=request.user)
+        form.fields['username'].disabled = True
+
+        if form.is_valid():
+            request.user.first_name = form.cleaned_data['fname']
+            request.user.last_name = form.cleaned_data['lname']
+            request.user.email = form.cleaned_data['email']
+            request.user.save()
+            request.user.userprofile.anonymous = form.cleaned_data['anonymous']
+            request.user.userprofile.save()
+
+            messages.success(request, 'Your Profile has been Updated successfully.')
+            return HttpResponseRedirect(reverse('profile'))
+
+    else:
+        form = UserUpdateForm(instance=request.user)
+        form.fields['username'].disabled = True
+        form.fields['username'].help_text = "You can't change your Username once the account is created."
+        form.fields['fname'].initial = request.user.first_name
+        form.fields['lname'].initial = request.user.last_name
+        form.fields['email'].initial = request.user.email
+        form.fields['anonymous'].initial = request.user.userprofile.anonymous
+
+    return render(request, 'profile_update.html', {'form': form})
 
 
 # messages.debug, info, success, warning, error

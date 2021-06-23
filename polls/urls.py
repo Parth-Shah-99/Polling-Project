@@ -24,7 +24,6 @@ urlpatterns = [
 	path('profile/mypolls/', views.ProfileMyPollsView.as_view(), name='profilemypolls'),
 	path('profile/createpoll/', views.profilecreatepoll, name='profilecreatepoll'),
 	path('profile/user/<str:username>/', views.UserProfilePollsView.as_view(), name='userprofilepolls'),
-]
 
-if settings.DEBUG:
-	urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+	path('profile/update/', views.profileupdate, name='profileupdate'),
+]

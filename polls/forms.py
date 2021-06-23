@@ -39,3 +39,15 @@ class CreatePollForm(forms.Form):
 			widget=forms.TextInput(attrs={'id': 'choice5_string', 'placeholder': 'Enter Choice 5 (optional)'}),
 			required=False)
 
+
+class UserUpdateForm(forms.ModelForm):
+
+	email = forms.EmailField()
+	fname = forms.CharField(max_length=50, label='First Name')
+	lname = forms.CharField(max_length=50, label='Last Name')
+	anonymous = forms.BooleanField(required=False, label='Keep me Anonymous')
+
+	class Meta:
+		model = User
+		fields = ['username', 'fname', 'lname', 'email', 'anonymous']
+

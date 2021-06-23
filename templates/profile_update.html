@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block title %}
-	<title>Profile</title>
+	<title>Update Profile</title>
 {% endblock %}
 
 {% block headerright %}
@@ -47,12 +47,24 @@
 
 	{% endif %}
 
-	<br>
 
 	{% if user.is_authenticated %}
 
 	<div class="w-50 mr-auto ml-auto">
-		Welcome <b>{{ user.username }}</b>, this is your profile!! <b>{{ user.get_full_name }}</b>
+		<hr style="background-color: red; height: 0.15em">
+		<h2>Update Profile Form</h2>
+		<hr style="background-color: red; height: 0.15em">
+	</div>
+	<br>
+
+	<div class="w-50 mr-auto ml-auto">
+		<form method="POST">
+			{% csrf_token %}
+
+			{{ form|crispy }}
+			<button type="submit" class="btn btn-outline-success">Update</button>
+		</form>
+		<br>
 	</div>
 
 	{% else %}
