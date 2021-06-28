@@ -52,7 +52,15 @@
 	{% if user.is_authenticated %}
 
 	<div class="w-50 mr-auto ml-auto">
-		Welcome <b>{{ user.username }}</b>, this is your profile!! <b>{{ user.get_full_name }}</b>
+		Welcome <b>{{ user.username }}</b>, this is your profile!!<br>
+    <div class="alert alert-info mt-4">
+      People will see you as
+      <strong>
+        {% if user.userprofile.anonymous %} "Anonymous".
+        {% else %} "{{ user.username }}".
+        {% endif %}
+      </strong>
+    </div>
 	</div>
 
 	{% else %}

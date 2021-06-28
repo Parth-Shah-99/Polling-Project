@@ -26,6 +26,13 @@ class Question(models.Model):
             votes += choice.votes
         return votes
 
+    @property
+    def get_userobj(self):
+        username = self.published_by
+        user = User.objects.get(username=username)
+        return user
+    
+
 
 class Choice(models.Model):
 

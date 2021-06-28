@@ -55,7 +55,7 @@
 
 		{% if specific_user %}
 		<h2 class="mb-4">
-			All Polls by <a href="{% url 'userprofilepolls' view.kwargs.username %}">{{ view.kwargs.username }}</a>
+			All Polls by "<a href="{% url 'userprofilepolls' view.kwargs.username %}">{{ view.kwargs.username }}</a>"
 			(Total - {{ page_obj.paginator.count }} poll{{ page_obj.paginator.count|pluralize }})
 		</h2>
 		{% else %}
@@ -87,8 +87,14 @@
 					
 					<hr class="my-0">
 				</legend>
-				<small class="mr-4 ml-3">Published by: 
-					"<a href="{% url 'userprofilepolls' question.published_by %}">{{ question.published_by }}</a>"</small>
+				<small class="mr-4 ml-3">
+					Published by:
+					{% if question.get_userobj.userprofile.anonymous %}
+						"<a href="#">Anonymous</a>"
+					{% else %}
+						"<a href="{% url 'userprofilepolls' question.published_by %}">{{ question.published_by }}</a>"
+					{% endif %}	
+				</small>
 				<small class="ml-4">Published on: {{ question.published_on|date:"F d, Y" }}</small>
 			
 			</fieldset>

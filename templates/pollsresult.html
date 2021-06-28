@@ -59,8 +59,14 @@
 				<p class="d-inline ml-2">{{ question.question_text }} ({{ question.total_votes }} votes)</p>
 				<hr class="my-0">
 			</legend>
-			<small class="mr-4 ml-3">Published by: 
-				"<a href="{% url 'userprofilepolls' question.published_by %}">{{ question.published_by }}</a>"</small>
+			<small class="mr-4 ml-3">
+				Published by:
+				{% if question.get_userobj.userprofile.anonymous %}
+					"<a href="#">Anonymous</a>"
+				{% else %}
+					"<a href="{% url 'userprofilepolls' question.published_by %}">{{ question.published_by }}</a>"
+				{% endif %}
+			</small>
 			<small class="ml-4">Published on: {{ question.published_on|date:"F d, Y" }}</small><br><br>
 			
 			<ul>
