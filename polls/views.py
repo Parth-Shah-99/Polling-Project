@@ -109,7 +109,7 @@ class UserProfilePollsView(generic.ListView):
             context['questions_voted'] = questions_voted
 
         context['specific_user'] = self.kwargs.get('username')
-
+        context['specific_user_anonymous'] = User.objects.get(username=self.kwargs.get('username')).userprofile.anonymous
         return context
 
 

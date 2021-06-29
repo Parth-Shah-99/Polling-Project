@@ -3,6 +3,12 @@
 {% load static %}
 
 {% block title %}
+	{% if specific_user_anonymous %}
+		<script type="text/javascript">
+			alert("The User you are trying to search wants to be Anonymous.");
+			window.location.href = "{% url 'profilepolls' %}";
+		</script>
+	{% endif %}
 	<title>Polls List</title>
 {% endblock %}
 
@@ -90,7 +96,7 @@
 				<small class="mr-4 ml-3">
 					Published by:
 					{% if question.get_userobj.userprofile.anonymous %}
-						"<a href="#">Anonymous</a>"
+						"<a href="#" onclick="alert('The user is Anonymous. They don\'t want to display their name!!!');">Anonymous</a>"
 					{% else %}
 						"<a href="{% url 'userprofilepolls' question.published_by %}">{{ question.published_by }}</a>"
 					{% endif %}	
