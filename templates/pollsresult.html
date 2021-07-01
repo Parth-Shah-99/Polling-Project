@@ -6,46 +6,10 @@
 	<title>Result of Poll {{ question.id }}</title>
 {% endblock %}
 
-{% block headerright %}
-
-    <ul class="navbar-nav ml-auto">
-      {% if user.is_authenticated %}
-      <li class="nav-item dropdown active">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Welcome, {{ user.get_username }}
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="{% url 'profileupdate' %}">Update Profile</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
-        </div>
-      </li>
-      {% else %}
-      <li class="nav-item">
-        <a href="{% url 'login' %}"><button class="btn btn-success mx-1" type="submit">Login</button></a>
-      </li>
-      <li class="nav-item">
-        <a href="{% url 'signup' %}"><button class="btn btn-success mx-1" type="submit">Signup</button></a>
-      </li>
-      {% endif %}
-    </ul>
-
-{% endblock %}
 
 {% block content %}
 
-	{% if messages %}
-
-	{% for message in messages %}
-		<div class="alert alert-{{message.tags}} alert-dismissible fade show w-50 ml-auto mr-auto mt-3" role="alert">
-			<h2>{{ message }}</h2>
-			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    			<span aria-hidden="true">&times;</span>
-  			</button>
-		</div>
-	{% endfor %}
-
-	{% endif %}
+	{% include 'messages.html' %}
 
 	<br>
 
@@ -91,7 +55,10 @@
 	{% else %}
 
 	<div class="w-50 mr-auto ml-auto">
-		You are not autheticated!! Please Login or Signup!!
+		<h2>
+	      You are not authenticated!! <br>
+	      Please <a href="{% url 'login' %}">Login</a> or <a href="{% url 'signup' %}">Signup</a>!!
+	    </h2>
 	</div>
 
 	{% endif %}

@@ -6,54 +6,21 @@
 	<title>Profile</title>
 {% endblock %}
 
-{% block headerright %}
-
-    <ul class="navbar-nav ml-auto">
-      {% if user.is_authenticated %}
-      <li class="nav-item dropdown active">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Welcome, {{ user.get_username }}
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="{% url 'profileupdate' %}">Update Profile</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
-        </div>
-      </li>
-      {% else %}
-      <li class="nav-item">
-        <a href="{% url 'login' %}"><button class="btn btn-success mx-1" type="submit">Login</button></a>
-      </li>
-      <li class="nav-item">
-        <a href="{% url 'signup' %}"><button class="btn btn-success mx-1" type="submit">Signup</button></a>
-      </li>
-      {% endif %}
-    </ul>
-
-{% endblock %}
 
 {% block content %}
 
-	{% if messages %}
-
-	{% for message in messages %}
-		<div class="alert alert-{{message.tags}} alert-dismissible fade show w-50 ml-auto mr-auto mt-3" role="alert">
-			<h2>{{ message }}</h2>
-			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    			<span aria-hidden="true">&times;</span>
-  			</button>
-		</div>
-	{% endfor %}
-
-	{% endif %}
+	{% include 'messages.html' %}
 
 	<br>
 
 	{% if user.is_authenticated %}
 
-	<div class="w-50 mr-auto ml-auto">
-		Welcome <b>{{ user.username }}</b>, this is your profile!!<br>
-    <div class="alert alert-info mt-4">
+	<div class="w-75 mr-auto ml-auto mt-3">
+
+    <img class="mr-3" src="{{ user.userprofile.profile_pic.url }}" width="100px" height="auto">
+
+		Hello <b>{{ user.username }}</b>, this is your profile!!<br>
+    <div class="w-75 alert alert-info mt-4">
       People will see you as
       <strong>
         {% if user.userprofile.anonymous %} "Anonymous".
@@ -61,13 +28,45 @@
         {% endif %}
       </strong>
     </div>
+
+    <div>
+      <table class="w-75 table table-striped">
+        <thead>
+          <tr>
+            <th class="text-center" colspan="2">Your Profile Details</th>
+          </tr>
+          <tr>
+            <th>Detail</th>
+            <th>#</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>No. of Polls you have Voted on</td>
+            <th>{{ no_of_voted_polls }} Polls</th>
+          </tr>
+          <tr>
+            <td>No. of Polls you have Created</td>
+            <th>{{ created_polls }} Polls</th>
+          </tr>
+          <tr>
+            <td>No. of Votes you have got from all your Polls</td>
+            <th>{{ my_polls_total_votes }} Votes</th>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
 	</div>
 
 	{% else %}
 
-	<div class="w-50 mr-auto ml-auto">
-		<h2>You are not autheticated!! Please Login or Signup!!</h2>
-	</div>
+  <div class="w-50 mr-auto ml-auto">
+    <h2>
+        You are not authenticated!! <br>
+        Please <a href="{% url 'login' %}">Login</a> or <a href="{% url 'signup' %}">Signup</a>!!
+      </h2>
+  </div>
 
 	{% endif %}
 

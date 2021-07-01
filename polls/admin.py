@@ -36,6 +36,7 @@ admin.site.register(Question, QuestionAdmin)
 class UserProfileAdmin(admin.ModelAdmin):
 	list_display = ['user', 'anonymous']
 	list_filter = ['anonymous']
+	search_fields = ['user__username']
 	list_per_page = 20
 
 admin.site.register(UserProfile, UserProfileAdmin)
@@ -46,7 +47,6 @@ class MyUserAdmin(UserAdmin):
 	inlines = [UserProfileInline]
 	model = UserProfile
 	list_display = ['username', 'email', 'first_name', 'last_name', 'is_staff', 'anonymous']
-	# list_filter = ['username', 'first_name', 'last_name']
 	def anonymous(self, obj):
 		return obj.userprofile.anonymous
 
@@ -60,6 +60,8 @@ class ChoiceAdmin(admin.ModelAdmin):
 		('Choice Information', {'fields': ['question', 'choice_text', 'votes']}),
 	]
 	list_display = ['question', 'choice_text', 'votes']
+	search_fields = ['choice_text', 'question__question_text']
+	list_per_page = 20
 
 admin.site.register(Choice, ChoiceAdmin)
 
@@ -72,6 +74,7 @@ class UserVotesAdmin(admin.ModelAdmin):
 		('Question Information', {'fields': ['question']}),
 	]
 	list_display = ['user', 'choice', 'question']
-	search_fields = ['user', 'choice', 'question']
+	search_fields = ['user__username', 'choice__choice_text', 'question__question_text']
+	list_per_page = 20
 
 admin.site.register(UserVotes, UserVotesAdmin)

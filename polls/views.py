@@ -9,6 +9,7 @@ from polls.models import Question, Choice, UserProfile, UserVotes
 from django.views import generic
 from django.core.paginator import Paginator
 import json
+from django.db.models import Sum
 
 # Create your views here.
 
@@ -51,13 +52,20 @@ def signup(request):
 
 
 def profile(request):
-    return render(request, 'profile.html', {})
 
 
-class ProfileView(generic.ListView):
-    model = Question
-    context_object_name = 'question_list'
-    template_name = 'profile.html'
+    if request.user.is_authenticated:
+        no_of_voted_polls = request.user.uservotes_set.all().count()
+        questions = Question.objects.filter(published_by=request.user.username)
+        created_polls = questions.count()
+        my_polls_total_votes = sum([ques.total_votes for ques in questions])
+        context = {
+            "no_of_voted_polls": no_of_voted_polls,
+            "created_polls": created_polls,
+            "my_polls_total_votes": my_polls_total_votes
+        }
+        return render(request, 'profile.html', context)
+    return render(request, 'profile.html')
 
 
 class ProfilePollsView(generic.ListView):
@@ -175,9 +183,6 @@ class PollsResultView(generic.DetailView):
 
 
 def profilecreatepoll(request):
-
-    if not request.user.is_authenticated:
-        return HttpResponseRedirect(reverse('profile'))
         
     form = CreatePollForm()
 

@@ -1,0 +1,23 @@
+{% load crispy_forms_tags %}
+{% load static %}
+<ul class="navbar-nav ml-auto">
+    {% if user.is_authenticated %}
+    <li class="nav-item dropdown active">
+      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Welcome, {{ user.get_username }}
+      </a>
+      <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+        <a class="dropdown-item" href="{% url 'profileupdate' %}">Update Profile</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+      </div>
+    </li>
+    {% else %}
+    <li class="nav-item">
+      <a href="{% url 'login' %}"><button class="btn btn-success mx-1" type="submit">Login</button></a>
+    </li>
+    <li class="nav-item">
+      <a href="{% url 'signup' %}"><button class="btn btn-success mx-1" type="submit">Signup</button></a>
+    </li>
+    {% endif %}
+</ul>

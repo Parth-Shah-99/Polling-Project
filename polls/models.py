@@ -56,7 +56,7 @@ class UserProfile(models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     anonymous = models.BooleanField('anonymous', default=False)
-    profile_pic = models.ImageField(default='default.jpg', upload_to='profile_pics')
+    profile_pic = models.ImageField(default='profile_pics/default.png', upload_to='profile_pics')
 
     def __str__(self):
         return self.user.username
