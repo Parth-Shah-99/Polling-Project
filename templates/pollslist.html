@@ -109,12 +109,7 @@
 
 	{% else %}
 	
-	<div class="w-50 mr-auto ml-auto">
-		<h2>
-	      You are not authenticated!! <br>
-	      Please <a href="{% url 'login' %}">Login</a> or <a href="{% url 'signup' %}">Signup</a>!!
-	    </h2>
-	</div>
+		{% include 'not_authenticated.html' %}
 
 	{% endif %}
 
