@@ -75,16 +75,22 @@ class ProfilePollsView(generic.ListView):
     paginate_by = 5
 
     def get_queryset(self):
-
+        questions = Question.objects.all().order_by('-published_on')
         if self.request.method == "GET":
 
-            search_text = self.request.GET.get("search_text", None)
-            if search_text:
-                return Question.objects.filter(question_text__icontains=search_text).order_by("-published_on")
-            else:
-                return Question.objects.order_by('-published_on')
+            if 'search_text' in self.request.GET:
+                search_text = self.request.GET.get("search_text", None)
+                questions = questions.filter(question_text__icontains=search_text).order_by('id')
+            if 'text_az' in self.request.GET:
+                questions = questions.order_by('question_text')
+            if 'text_za' in self.request.GET:
+                questions = questions.order_by('-question_text')
+            if 'date_old' in self.request.GET:
+                questions = questions.order_by('published_on')
+            if 'date_new' in self.request.GET:
+                questions = questions.order_by('-published_on')
 
-        return Question.objects.order_by('-published_on')
+        return questions
 
     def get_context_data(self, *args, **kwargs):
 
@@ -172,9 +178,13 @@ class PollsResultView(generic.DetailView):
             choice_id = (request.POST['choice'])[6:]
             choice = q.choice_set.get(id=choice_id)
             user = self.request.user
+            uservote = UserVotes.objects.filter(user=user, choice=choice).count()
         except (KeyError, Choice.DoesNotExist):
             return HttpResponseRedirect(reverse('pollsdetail', kwargs={'id': 'q.id'}))
         else:
+            if(uservote>0):
+                messages.warning(request, 'You have already voted in this Poll.')
+                return HttpResponseRedirect(reverse('pollsdetail', args=(q.id, )))
             choice.votes += 1
             choice.save()
             UserVotes.objects.create(user=user, choice=choice, question=q)

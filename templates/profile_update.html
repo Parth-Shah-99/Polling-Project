@@ -25,7 +25,30 @@
 		<form method="POST">
 			{% csrf_token %}
 
-			{{ form|crispy }}
+			<div class="form-row">
+				<div class="form-group col-md-12 mb-0 mr-auto ml-auto">
+					{{ form.username|as_crispy_field }}
+				</div>
+			</div>
+			<div class="form-row">
+				<div class="form-group col-md-6 mb-0 mr-auto ml-auto">
+					{{ form.fname|as_crispy_field }}
+				</div>
+				<div class="form-group col-md-6 mb-0 mr-auto ml-auto">
+					{{ form.lname|as_crispy_field }}
+				</div>
+			</div>
+			<div class="form-row">
+				<div class="form-group col-md-12 mb-0 mr-auto ml-auto">
+					{{ form.email|as_crispy_field }}
+				</div>
+			</div>
+			<div class="form-row">
+				<div class="form-group col-md-12 mb-0 mr-auto ml-auto">
+					{{ form.anonymous|as_crispy_field }}
+				</div>
+			</div>
+
 			<button type="submit" class="btn btn-outline-success">Update</button>
 		</form>
 		<br>

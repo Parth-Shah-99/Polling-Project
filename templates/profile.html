@@ -3,23 +3,23 @@
 {% load static %}
 
 {% block title %}
-	<title>Profile</title>
+  <title>Profile</title>
 {% endblock %}
 
 
 {% block content %}
 
-	{% include 'messages.html' %}
+  {% include 'messages.html' %}
 
-	<br>
+  <br>
 
-	{% if user.is_authenticated %}
+  {% if user.is_authenticated %}
 
-	<div class="w-75 mr-auto ml-auto mt-3">
+  <div class="w-75 mr-auto ml-auto mt-3">
 
-    <img class="mr-3" src="{{ user.userprofile.profile_pic.url }}" width="100px" height="auto">
+    <img class="mr-3" src="{% static 'images/default.png' %}" width="100px" height="auto">
 
-		Hello <b>{{ user.username }}</b>, this is your profile!!<br>
+    Hello <b>{{ user.username }}</b>, this is your profile!!<br>
     <div class="w-75 alert alert-info mt-4">
       People will see you as
       <strong>
@@ -57,12 +57,12 @@
       </table>
     </div>
 
-	</div>
+  </div>
 
-	{% else %}
+  {% else %}
 
     {% include 'not_authenticated.html' %}
 
-	{% endif %}
+  {% endif %}
 
 {% endblock %}

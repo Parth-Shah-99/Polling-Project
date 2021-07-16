@@ -21,7 +21,37 @@
 
 	{% if user.is_authenticated %}
 
-	<div class="container">
+	<div class="container mt-3">
+
+		<div class="dropdown d-inline">
+		  <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class="fas fa-font border border-primary rounded px-1 py-1"></i> Sort by Text
+		  </button>
+		  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+		    <a class="dropdown-item" href="?text_az=True">
+		    	<i class="fas fa-sort-alpha-down border border-info rounded-circle px-1 py-1"></i>  A-Z
+		    </a>
+		    <a class="dropdown-item" href="?text_za=True">
+		    	<i class="fas fa-sort-alpha-down-alt border border-info rounded-circle px-1 py-1"></i>  Z-A
+		    </a>
+		  </div>
+		</div>
+
+		<div class="dropdown d-inline">
+		  <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class="fas fa-calendar-day border border-primary rounded px-1 py-1"></i> Sort by Date
+		  </button>
+		  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+		    <a class="dropdown-item" href="?date_new=True">
+		    	<i class="fas fa-sort-numeric-down border border-info rounded-circle px-1 py-1"></i>  Newest First
+		    </a>
+		    <a class="dropdown-item" href="?date_old=True">
+		    	<i class="fas fa-sort-numeric-up border border-info rounded-circle px-1 py-1"></i>  Oldest First
+		    </a>
+		  </div>
+		</div>
+
+		<a class="ml-4" href="{% url 'profilepolls' %}"><i class="fas fa-times-circle"></i> Clear all filters</a>
 
 		{% if specific_user %}
 		<h2 class="mb-4 mt-4">
@@ -78,21 +108,33 @@
 		{% if is_paginated %}
 
 			{% if page_obj.has_previous %}
-				<a class="btn btn-outline-secondary btn-sm" href="?page=1">&lt;&lt;</a>
-				<a class="btn btn-outline-secondary btn-sm" href="?page={{ page_obj.previous_page_number }}">&lt;</a>
+				<a class="btn btn-outline-secondary btn-sm"
+					href="?{% include 'pagination.html' %}page=1">&lt;&lt;
+				</a>
+				<a class="btn btn-outline-secondary btn-sm"
+					href="?{% include 'pagination.html' %}page={{ page_obj.previous_page_number }}">&lt;
+				</a>
 			{% endif %}
 
 			{% for num in page_obj.paginator.page_range %}
 				{% if page_obj.number == num %}
-					<a class="btn btn-secondary btn-sm" href="?page={{ num }}">{{ num }}</a>
+					<a class="btn btn-secondary btn-sm"
+						href="?{% include 'pagination.html' %}page={{ num }}">{{ num }}
+					</a>
 				{% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-					<a class="btn btn-outline-secondary btn-sm" href="?page={{ num }}">{{ num }}</a>
+					<a class="btn btn-outline-secondary btn-sm"
+						href="?{% include 'pagination.html' %}page={{ num }}">{{ num }}
+					</a>
 				{% endif %}
 			{% endfor %}
 
 			{% if page_obj.has_next %}
-				<a class="btn btn-outline-secondary btn-sm" href="?page={{ page_obj.next_page_number}}">&gt;</a>
-				<a class="btn btn-outline-secondary btn-sm" href="?page={{ page_obj.paginator.num_pages }}">&gt;&gt;</a>
+				<a class="btn btn-outline-secondary btn-sm"
+					href="?{% include 'pagination.html' %}page={{ page_obj.next_page_number}}">&gt;
+				</a>
+				<a class="btn btn-outline-secondary btn-sm"
+					href="?{% include 'pagination.html' %}page={{ page_obj.paginator.num_pages }}">&gt;&gt;
+				</a>
 			{% endif %}
 
 		{% endif %}
